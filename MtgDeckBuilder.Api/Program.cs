@@ -8,7 +8,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 {
     options.EnableDetailedErrors();
     options.EnableSensitiveDataLogging(builder.Environment.IsDevelopment());
-    options.UseSqlServer(builder.Configuration.GetConnectionString("mssql"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("mssql"), options => options.EnableRetryOnFailure());
 });
 
 // Add services to the container.
