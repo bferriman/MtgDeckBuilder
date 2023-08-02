@@ -1,4 +1,5 @@
 using MtgDeckBuilder.Api.Data;
+using MtgDeckBuilder.Api.DTOs;
 
 namespace MtgDeckBuilder.Api.Services;
 
@@ -13,13 +14,24 @@ public class DbDeckItemService : IDeckItemService
         _context = context;
     }
     
-    public IQueryable<DeckItem> GetAll()
+    public IQueryable<DeckItemDto> GetAll()
     {
         _logger.LogInformation("Getting all decks");
-        return _context.DeckItems;
+        return _context.DeckItems.Select(deck => new DeckItemDto
+        {
+            Name = deck.Name,
+            Commander = new CardDto
+            {
+                Name = deck.Commander.Name
+            },
+            NinetyNine = deck.NinetyNine.Select(card => new CardDto
+            {
+                Name = card.Name
+            })
+        });
     }
 
-    public DeckItem? GetById(int id)
+    public DeckItemDto? GetById(int id)
     {
         throw new NotImplementedException();
     }

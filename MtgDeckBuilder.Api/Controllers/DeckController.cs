@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MtgDeckBuilder.Api.Data;
+using MtgDeckBuilder.Api.DTOs;
 using MtgDeckBuilder.Api.Services;
 
 namespace MtgDeckBuilder.Api.Controllers;
@@ -16,7 +17,7 @@ public class DeckController : ControllerBase
     }
 
     [HttpGet(Name = nameof(GetAllDecks))]
-    public ActionResult<IEnumerable<DeckItem>> GetAllDecks()
+    public ActionResult<IEnumerable<DeckItemDto>> GetAllDecks()
     {
         return Ok(_deckItemService.GetAll());
     }

@@ -1,11 +1,12 @@
 using MtgDeckBuilder.Api.Data;
+using MtgDeckBuilder.Api.DTOs;
 
 namespace MtgDeckBuilder.Api.Services;
 
 public interface IDeckItemService
 {
-    IQueryable<DeckItem> GetAll();
-    DeckItem? GetById(int id);
+    IQueryable<DeckItemDto> GetAll();
+    DeckItemDto? GetById(int id);
     int? GetPriceById(int id);
     int? Create(string deckName, Card commander);
     void Delete(int id);
