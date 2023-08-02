@@ -33,7 +33,26 @@ public class DbDeckItemService : IDeckItemService
 
     public DeckItemDto? GetById(int id)
     {
-        throw new NotImplementedException();
+        var target = _context.DeckItems
+            .Where(deck => deck.Id == id)
+            .Select(deck => new DeckItemDto
+            {
+                Name = deck.Name,
+                Commander = new CardDto
+                {
+                    Name = deck.Commander.Name
+                },
+                NinetyNine = deck.NinetyNine.Select(card => new CardDto
+                {
+                    Name = card.Name
+                })
+            }).SingleOrDefault();
+        if (target is null)
+        {
+            _logger.LogWarning("Request for deck with id {DeckId} failed - Id not found", id);
+        }
+
+        return target;
     }
 
     public int? GetPriceById(int id)
