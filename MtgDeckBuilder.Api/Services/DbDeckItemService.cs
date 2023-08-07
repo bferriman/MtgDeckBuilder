@@ -7,11 +7,13 @@ public class DbDeckItemService : IDeckItemService
 {
     private readonly ILogger<DbDeckItemService> _logger;
     private readonly ApplicationContext _context;
+    private readonly ScryfallService _scryfall;
 
     public DbDeckItemService(ILogger<DbDeckItemService> logger, ApplicationContext context)
     {
         _logger = logger;
         _context = context;
+        _scryfall = new ScryfallService();
     }
     
     public IQueryable<DeckItemDto> GetAll()
@@ -60,9 +62,19 @@ public class DbDeckItemService : IDeckItemService
         throw new NotImplementedException();
     }
 
-    public int? Create(string deckName, Card commander)
+    public async Task<int?> Create(string deckName, string commanderName)
     {
-        throw new NotImplementedException();
+        Card? commander = await _scryfall.GetCardByName(commanderName, _logger);
+        if (commander is null) return null;
+        DeckItem deckItem = new DeckItem
+        {
+            Name = deckName,
+            Commander = commander,
+            NinetyNine = new List<Card>()
+        };
+        _context.DeckItems.Add(deckItem);
+        _context.SaveChanges();
+        return deckItem.Id;
     }
 
     public void Delete(int id)

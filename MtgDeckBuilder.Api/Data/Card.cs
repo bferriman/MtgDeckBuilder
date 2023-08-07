@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 
 namespace MtgDeckBuilder.Api.Data;
@@ -5,8 +6,9 @@ namespace MtgDeckBuilder.Api.Data;
 [Owned]
 public class Card
 {
-    // public int CardId { get; set; }
-    
+    [property: JsonPropertyName("name")]    
     public string Name { get; set; } = null!;
+    
+    [property: JsonPropertyName("id")]
     public string ScryfallId { get; set; } = null!;
 }

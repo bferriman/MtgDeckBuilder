@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MtgDeckBuilder.Api.Data;
 using MtgDeckBuilder.Api.DTOs;
+using MtgDeckBuilder.Api.Models;
 using MtgDeckBuilder.Api.Services;
 
 namespace MtgDeckBuilder.Api.Controllers;
@@ -32,5 +33,17 @@ public class DeckController : ControllerBase
         if (deck is null)
             return NotFound();
         return Ok(deck);
+    }
+
+    [HttpPost(Name = nameof(CreateDeckItem))]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> CreateDeckItem([FromBody] CreateDeckItemViewModel model)
+    {
+        var createdId = await _deckItemService.Create(model.DeckName, model.CommanderName);
+        if (createdId is not null)
+            return CreatedAtRoute(nameof(GetDeckById), new { id = createdId!.Value }, null);
+        ModelState.AddModelError("CommanderName", "Provided commander not found");
+        return BadRequest(ModelState);
     }
 }
