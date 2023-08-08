@@ -21,6 +21,7 @@ public class DbDeckItemService : IDeckItemService
         _logger.LogInformation("Getting all decks");
         return _context.DeckItems.Select(deck => new DeckItemDto
         {
+            Id = deck.Id,
             Name = deck.Name,
             Commander = new CardDto
             {
@@ -39,6 +40,7 @@ public class DbDeckItemService : IDeckItemService
             .Where(deck => deck.Id == id)
             .Select(deck => new DeckItemDto
             {
+                Id = deck.Id,
                 Name = deck.Name,
                 Commander = new CardDto
                 {
