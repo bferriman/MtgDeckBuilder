@@ -46,4 +46,13 @@ public class DeckController : ControllerBase
         ModelState.AddModelError("CommanderName", "Provided commander not found");
         return BadRequest(ModelState);
     }
+
+    [HttpPut("{id:int}", Name = nameof(UpdateDeckItem))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> UpdateDeckItem(int id, [FromBody] UpdateDeckItemViewModel model)
+    {
+        await _deckItemService.Update(id, model.DeckName, model.CommanderName);
+        return NoContent();
+    }
 }

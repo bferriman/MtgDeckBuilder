@@ -64,9 +64,9 @@ public class DbDeckItemService : IDeckItemService
 
     public async Task<int?> Create(string deckName, string commanderName)
     {
-        Card? commander = await _scryfall.GetCardByName(commanderName, _logger);
+        var commander = await _scryfall.GetCardByName(commanderName, _logger);
         if (commander is null) return null;
-        DeckItem deckItem = new DeckItem
+        var deckItem = new DeckItem
         {
             Name = deckName,
             Commander = commander,
@@ -82,9 +82,28 @@ public class DbDeckItemService : IDeckItemService
         throw new NotImplementedException();
     }
 
-    public void Update(int id, string deckName, Card commander)
+    public async Task Update(int id, string deckName, string commanderName)
     {
-        throw new NotImplementedException();
+        var target = _context.DeckItems.SingleOrDefault(item => item.Id == id);
+        if (target is null)
+        {
+            _logger.LogWarning("Invalid deck id in update request: {DeckId}", id);
+            return;
+        }
+
+        if (target.Commander.Name != commanderName)
+        {
+            var commander = await _scryfall.GetCardByName(commanderName, _logger);
+            if (commander is null)
+            {
+                _logger.LogWarning("Aborting Update: Commander lookup failed");
+                return;
+            }
+            target.Commander = commander;
+        }
+
+        target.Name = deckName;
+        _context.SaveChanges();
     }
 
     public string? AddCard(string cardName)
