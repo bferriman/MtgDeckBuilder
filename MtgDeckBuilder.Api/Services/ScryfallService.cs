@@ -25,7 +25,7 @@ public class ScryfallService
 
         catch (HttpRequestException)
         {
-            logger.LogWarning("Error during deck creation: Commander with name '{CommanderName}' was not found", name);
+            logger.LogWarning("Error during card lookup: Card with name '{CardName}' was not found", name);
             return null;
         }
     }

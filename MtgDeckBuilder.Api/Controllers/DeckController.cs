@@ -63,4 +63,14 @@ public class DeckController : ControllerBase
         await _deckItemService.Update(id, model.DeckName, model.CommanderName);
         return NoContent();
     }
+
+    [HttpPut("add_card/{id:int}", Name = nameof(AddCardToDeck))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> AddCardToDeck(int id, string cardName)
+    {
+        var result = await _deckItemService.AddCard(id, cardName);
+        if (result is null) return NotFound();
+        return NoContent();
+    }
 }

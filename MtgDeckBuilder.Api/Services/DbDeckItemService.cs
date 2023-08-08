@@ -116,12 +116,32 @@ public class DbDeckItemService : IDeckItemService
         _context.SaveChanges();
     }
 
-    public string? AddCard(string cardName)
+    public async Task<string?> AddCard(int deckId, string cardName)
     {
-        throw new NotImplementedException();
+        var target = _context.DeckItems.SingleOrDefault(item => item.Id == deckId);
+        if (target is null)
+        {
+            _logger.LogWarning("Invalid deck id in add card request: {DeckId}", deckId);
+            return null;
+        }
+        var card = await _scryfall.GetCardByName(cardName, _logger);
+        if (card is null)
+        {
+            _logger.LogWarning("Aborting Add Card Operation: Card lookup failed");
+            return null;
+        }
+
+        if (target.NinetyNine.Any(c => c.Name == card.Name))
+        {
+            _logger.LogWarning("Aborting Add Card Operation: Card already in deck");
+            return null;
+        }
+        target.NinetyNine.Add(card);
+        _context.SaveChanges();
+        return card.Name;
     }
 
-    public IQueryable<string> AddRandomCards(string query, int numCards)
+    public IQueryable<string> AddRandomCards(int deckId, string query, int numCards)
     {
         throw new NotImplementedException();
     }
