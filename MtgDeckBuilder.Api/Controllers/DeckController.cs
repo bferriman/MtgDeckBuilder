@@ -47,6 +47,14 @@ public class DeckController : ControllerBase
         return BadRequest(ModelState);
     }
 
+    [HttpDelete(Name = nameof(DeleteDeckItem))]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public IActionResult DeleteDeckItem(int id)
+    {
+        _deckItemService.Delete(id);
+        return NoContent();
+    }
+
     [HttpPut("{id:int}", Name = nameof(UpdateDeckItem))]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]

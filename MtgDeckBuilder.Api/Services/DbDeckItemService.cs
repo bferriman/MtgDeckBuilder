@@ -79,7 +79,15 @@ public class DbDeckItemService : IDeckItemService
 
     public void Delete(int id)
     {
-        throw new NotImplementedException();
+        var target = _context.DeckItems.SingleOrDefault(item => item.Id == id);
+        if (target is null)
+        {
+            _logger.LogWarning("Invalid deck id in delete request: {DeckId}", id);
+            return;
+        }
+
+        _context.DeckItems.Remove(target);
+        _context.SaveChanges();
     }
 
     public async Task Update(int id, string deckName, string commanderName)
