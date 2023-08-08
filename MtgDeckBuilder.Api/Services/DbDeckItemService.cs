@@ -146,8 +146,18 @@ public class DbDeckItemService : IDeckItemService
         throw new NotImplementedException();
     }
 
-    public void RemoveCard(string cardName)
+    public int? RemoveCard(int deckId, string cardName)
     {
-        throw new NotImplementedException();
+        var target = _context.DeckItems.SingleOrDefault(item => item.Id == deckId);
+        if (target is null)
+        {
+            _logger.LogWarning("Invalid deck id in remove card request: {DeckId}", deckId);
+            return null;
+        }
+
+        var removedCount = target.NinetyNine.RemoveAll(c => c.Name == cardName);
+
+        if (removedCount > 0) _context.SaveChanges();
+        return removedCount;
     }
 }

@@ -73,4 +73,14 @@ public class DeckController : ControllerBase
         if (result is null) return NotFound();
         return NoContent();
     }
+
+    [HttpPut("remove_card/{id:int}", Name = nameof(RemoveCardFromDeck))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public IActionResult RemoveCardFromDeck(int id, string cardName)
+    {
+        var result = _deckItemService.RemoveCard(id, cardName);
+        if (result is null or 0) return NotFound();
+        return NoContent();
+    }
 }
