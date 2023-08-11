@@ -7,7 +7,7 @@ public interface IDeckItemService
 {
     IQueryable<DeckItemDto> GetAll();
     DeckItemDto? GetById(int id);
-    int? GetPriceById(int id);
+    Task<decimal?> GetPriceById(int id);
     Task<int?> Create(string deckName, string commanderName);
     void Delete(int id);
     Task Update(int id, string deckName, string commanderName);

@@ -59,9 +59,30 @@ public class DbDeckItemService : IDeckItemService
         return target;
     }
 
-    public int? GetPriceById(int id)
+    public async Task<decimal?> GetPriceById(int id)
     {
-        throw new NotImplementedException();
+        var target = _context.DeckItems.SingleOrDefault(item => item.Id == id);
+        if (target is null)
+        {
+            _logger.LogWarning("Invalid deck id in price request: {DeckId}", id);
+            return null;
+        }
+        var totalPrice = 0.00m;
+        
+        // get and add price of commander to total
+        var cardPrice = await _scryfall.GetCardPriceDataById(target.Commander.ScryfallId, _logger);
+        if (cardPrice.HasValue) totalPrice += cardPrice.Value;
+        Thread.Sleep(100);
+        
+        // get and add price of all cards in the ninety-nine to total
+        foreach (var card in target.NinetyNine)
+        {
+            cardPrice = await _scryfall.GetCardPriceDataById(card.ScryfallId, _logger);
+            if (cardPrice.HasValue) totalPrice += cardPrice.Value;
+            Thread.Sleep(100);
+        }
+
+        return totalPrice;
     }
 
     public async Task<int?> Create(string deckName, string commanderName)

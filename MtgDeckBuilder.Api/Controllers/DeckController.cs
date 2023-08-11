@@ -34,6 +34,17 @@ public class DeckController : ControllerBase
             return NotFound();
         return Ok(deck);
     }
+    
+    [HttpGet("price/{id:int}", Name = nameof(GetDeckPriceById))]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<decimal>> GetDeckPriceById(int id)
+    {
+        var deckPrice = await _deckItemService.GetPriceById(id);
+        if (deckPrice is null)
+            return NotFound();
+        return Ok(deckPrice);
+    }
 
     [HttpPost(Name = nameof(CreateDeckItem))]
     [ProducesResponseType(StatusCodes.Status201Created)]
