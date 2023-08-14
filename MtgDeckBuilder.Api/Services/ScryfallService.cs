@@ -18,10 +18,13 @@ public class ScryfallService
     {
         try
         {
-            var responseStream = await _client.GetStreamAsync($"https://api.scryfall.com/cards/named?fuzzy={name}");
+            // var responseStream = await _client.GetStreamAsync($"https://api.scryfall.com/cards/named?fuzzy={name}");
+            var url =
+                $"https://api.scryfall.com/cards/search?order=name&unique=prints&q=!%22{name}%22+%28game%3Apaper%29+legal%3Acommander+%28lang%3Aen%29";
+            var responseStream = await _client.GetStreamAsync(url);
 
-            var card = await JsonSerializer.DeserializeAsync<Card>(responseStream);
-            return card;
+            var cardList = await JsonSerializer.DeserializeAsync<CardList>(responseStream);
+            return cardList.Cards[0];
         }
 
         catch (HttpRequestException)
