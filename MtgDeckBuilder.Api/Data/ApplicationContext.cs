@@ -33,13 +33,15 @@ public class ApplicationContext : DbContext
             {
                 DeckItemId = 1,
                 Name = "Slimefoot, the Stowaway", 
-                ScryfallId = "e8815cd9-7032-445a-aebc-cfc19bd51ee4"
+                ScryfallId = "e8815cd9-7032-445a-aebc-cfc19bd51ee4",
+                ColorIdentity = new List<string> {"B", "G"}
             },
             new
             {
                 DeckItemId = 2,
                 Name = "Nicol Bolas, the Ravager // Nicol Bolas, the Arisen",
-                ScryfallId = "7b215968-93a6-4278-ac61-4e3e8c3c3943"
+                ScryfallId = "7b215968-93a6-4278-ac61-4e3e8c3c3943",
+                ColorIdentity = new List<string> {"B", "R", "U"}
             }
         );
 
@@ -54,21 +56,24 @@ public class ApplicationContext : DbContext
                     Id = 3,
                     DeckItemId = 1,
                     Name = "Dictate of Erebos",
-                    ScryfallId = "9f06db70-95f9-41eb-8e5f-8bc56fd34c09"
+                    ScryfallId = "9f06db70-95f9-41eb-8e5f-8bc56fd34c09",
+                    ColorIdentity = new List<string> {"B"}
                 },
                 new
                 {
                     Id = 4,
                     DeckItemId = 1,
                     Name = "Tendershoot Dryad",
-                    ScryfallId = "a159830a-698f-423c-9da0-a734b210ecab"
+                    ScryfallId = "a159830a-698f-423c-9da0-a734b210ecab",
+                    ColorIdentity = new List<string> {"G"}
                 },
                 new
                 {
                     Id = 5,
                     DeckItemId = 2,
                     Name = "Royal Assassin",
-                    ScryfallId = "d12e8109-8215-46b5-a0af-fe7e4b6b10b0"
+                    ScryfallId = "d12e8109-8215-46b5-a0af-fe7e4b6b10b0",
+                    ColorIdentity = new List<string> {"B"}
                 }
             );
         });

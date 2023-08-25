@@ -162,7 +162,7 @@ public class DbDeckItemService : IDeckItemService
         return card.Name;
     }
 
-    public IQueryable<string> AddRandomCards(int deckId, string query, int numCards)
+    public IQueryable<CardDto> AddRandomCards(int deckId, string query, int numCards)
     {
         throw new NotImplementedException();
     }

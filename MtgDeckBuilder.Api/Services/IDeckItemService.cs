@@ -12,6 +12,6 @@ public interface IDeckItemService
     void Delete(int id);
     Task Update(int id, string deckName, string commanderName);
     Task<string?> AddCard(int deckId, string cardName);
-    IQueryable<string> AddRandomCards(int deckId, string query, int numCards);
+    IQueryable<CardDto> AddRandomCards(int deckId, string query, int numCards);
     int? RemoveCard(int deckId, string cardName);
 }

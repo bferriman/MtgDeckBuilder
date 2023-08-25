@@ -11,4 +11,7 @@ public class Card
     
     [property: JsonPropertyName("id")]
     public string ScryfallId { get; set; } = null!;
+
+    [property: JsonPropertyName("color_identity")]
+    public string ColorIdentity { get; set; } = null!;
 }
